@@ -7,3 +7,6 @@ https://github.com/rosewang2008/language_modeling_via_stochastic_processes
 https://github.com/XiangLi1999/ContrastiveDecoding
 
 https://huggingface.co/blog/introducing-csearch contrastive search
+
+
+use in code: https://twitter.com/moyix/status/1606103262138011649
