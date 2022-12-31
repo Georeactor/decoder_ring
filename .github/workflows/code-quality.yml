@@ -1,0 +1,18 @@
+name: Checks
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Checks
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+    - run: pip install --upgrade pip
+    - run: pip install transformers torch black pylint mypy
+    - run: black --diff --check $(git ls-files '*.py')
+    - run: pylint --disable=all --enable=unused-import $(git ls-files '*.py')
+    - run: mypy --ignore-missing-imports $(git ls-files '*.py')
+
