@@ -4,10 +4,15 @@ is_constraint_gen_mode
 
 Unsupported:
 
-- https://github.com/martiansideofthemoon/rankgen
 - https://arxiv.org/abs/2203.11370 time control
 - https://github.com/rosewang2008/language_modeling_via_stochastic_processes
 - https://github.com/XiangLi1999/ContrastiveDecoding
+
+Issues:
+
+- https://github.com/martiansideofthemoon/rankgen
+
+There is a rankgen pip package, but it has its own encoder/decoder and requires from a set of t5 models.
 
 Supported but should be linked:
 

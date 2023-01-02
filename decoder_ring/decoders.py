@@ -50,24 +50,24 @@ class BeamSearch(GenericDecoder):
             raise ValueError("num_beam_groups must be a positive integer")
         self.num_beam_groups = num_beam_groups
 
-    def set_early_stopping(self, early_stopping: bool):
+    def set_early_stopping(self, early_stopping: bool) -> None:
         self.early_stopping = self.early_stopping
 
-    def set_length_penalty(self, length_penalty: float):
+    def set_length_penalty(self, length_penalty: float) -> None:
         # values < 0.0 make shorter sequences; > 0.0 make longer sequences; default 1.0
         self.length_penalty = length_penalty
 
-    def set_num_beams(self, num_beams: int):
+    def set_num_beams(self, num_beams: int) -> None:
         if num_beams < 1:
             raise ValueError("num_beams must be a positive integer")
         self.num_beams = num_beams
 
-    def set_num_beam_groups(self, num_beam_groups: int):
+    def set_num_beam_groups(self, num_beam_groups: int) -> None:
         if num_beam_groups < 1:
             raise ValueError("num_beam_groups must be a positive integer")
         self.num_beams = num_beam_groups
 
-    def validate_params(self):
+    def validate_params(self) -> None:
         if self.num_beams is None:
             raise ValueError(
                 "num_beams must be set in decoder's constructor or set_num_beams before generating text"
@@ -147,7 +147,7 @@ class RandomSampling(GenericDecoder):
     def set_random_seed(self, random_seed: int) -> None:
         self.seed = random_seed
 
-    def validate_params(self):
+    def validate_params(self) -> None:
         if self.seed is None:
             logging.warning(
                 "Initalize decoder with a random_seed, or call set_random_seed, for reproducible results."
