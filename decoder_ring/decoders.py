@@ -67,19 +67,22 @@ class BeamSearch(GenericDecoder):
             raise ValueError("num_beam_groups must be a positive integer")
         self.num_beams = num_beam_groups
 
-    def generate_text(
-        self,
-        prompt: Optional[Tensor],
-        max_length: int = 100,
-    ) -> GenerationOutput:
+    def validate_params(self):
         if self.num_beams is None:
             raise ValueError(
-                "num_beams must be set in BeamSearch constructor or set_num_beams before generating text"
+                "num_beams must be set in decoder's constructor or set_num_beams before generating text"
             )
         elif self.num_beams == 1:
             logging.warn(
                 "One beam (as set in num_beams) is the same as greedy decoder (or random sampling, if sampling is enabled)."
             )
+
+    def generate_text(
+        self,
+        prompt: Optional[Tensor],
+        max_length: int = 100,
+    ) -> GenerationOutput:
+        self.validate_params()
         return self.model.generate(
             prompt,
             early_stopping=self.early_stopping,
@@ -116,14 +119,7 @@ class BeamSearchWithSampling(BeamSearch):
         prompt: Optional[Tensor],
         max_length: int = 100,
     ) -> GenerationOutput:
-        if self.num_beams is None:
-            raise ValueError(
-                "num_beams must be set in BeamSearchWithSampling constructor or set_num_beams before generating text"
-            )
-        elif self.num_beams == 1:
-            logging.warn(
-                "One beam (as set in num_beams) is the same as greedy decoder (or random sampling, if sampling is enabled)."
-            )
+        self.validate_params()
         if self.seed is None:
             logging.warning(
                 "Initalize RandomSampling with a random_seed, or call set_random_seed, for reproducible results."
@@ -151,17 +147,20 @@ class RandomSampling(GenericDecoder):
     def set_random_seed(self, random_seed: int) -> None:
         self.seed = random_seed
 
+    def validate_params(self):
+        if self.seed is None:
+            logging.warning(
+                "Initalize decoder with a random_seed, or call set_random_seed, for reproducible results."
+            )
+        else:
+            set_seed(self.seed)
+
     def generate_text(
         self,
         prompt: Optional[Tensor],
         max_length: int = 100,
     ) -> GenerationOutput:
-        if self.seed is None:
-            logging.warning(
-                "Initalize RandomSampling with a random_seed, or call set_random_seed, for reproducible results."
-            )
-        else:
-            set_seed(self.seed)
+        self.validate_params()
         return self.model.generate(prompt, do_sample=True, max_length=max_length)
 
 
@@ -191,12 +190,7 @@ class TypicalDecoder(RandomSampling):
             raise ValueError(
                 "typical_p must be set in TypicalDecoder's constructor or set_typical_p before generating text."
             )
-        if self.seed is None:
-            logging.warning(
-                "Initalize TypicalDecoder with a random_seed, or call set_random_seed, for reproducible results."
-            )
-        else:
-            set_seed(self.seed)
+        self.validate_params()
         return self.model.generate(
             prompt,
             do_sample=True,
@@ -244,12 +238,7 @@ class ContrastiveSearch(RandomSampling):
             raise ValueError(
                 "top_k must be set in ContrastiveSearch's constructor or set_top_k before generating text."
             )
-        if self.seed is None:
-            logging.warning(
-                "Initalize ContrastiveSearch with a random_seed, or call set_random_seed, for reproducible results."
-            )
-        else:
-            set_seed(self.seed)
+        self.validate_params()
         return self.model.generate(
             prompt,
             do_sample=True,

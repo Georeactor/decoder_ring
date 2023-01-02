@@ -19,7 +19,7 @@ I would like to expand on the documentation in all of the decoder options, links
 ### Supported methods
 
 - BeamSearch (params: num_beams, num_beam_groups, early_stopping, length_penalty)
-- BeamSearchWithSampling (params: num_beams, num_beam_groups, early_stopping, length_penalt, random_seed)
+- BeamSearchWithSampling (params: num_beams, num_beam_groups, early_stopping, length_penalty, random_seed)
 - ContrastiveSearch (params: random_seed, penalty_alpha, top_k)
 - GreedyDecoder
 - RandomSampling (params: random_seed)
