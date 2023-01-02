@@ -18,6 +18,8 @@ I would like to expand on the documentation in all of the decoder options, links
 
 ### Supported methods
 
+- BeamSearch (params: num_beams, num_beam_groups, early_stopping, length_penalty)
+- BeamSearchWithSampling (params: num_beams, num_beam_groups, early_stopping, length_penalt, random_seed)
 - ContrastiveSearch (params: random_seed, penalty_alpha, top_k)
 - GreedyDecoder
 - RandomSampling (params: random_seed)
@@ -30,7 +32,7 @@ from decoder import BasicWriter, RandomSampling
 
 basic = BasicWriter('gpt2', RandomSampling)
 writer_output = basic.write_text(
-    prompt="Hello, my name is", max_length=20, early_stopping=True
+    prompt="Hello, my name is", max_length=20,
 )
 ```
 
@@ -49,7 +51,7 @@ Example with Transformers' default greedy decoder:
 ```python
 decoder1 = GreedyDecoder(model)
 greedy_output = decoder1.generate_text(
-    prompt=content, max_length=20, early_stopping=True
+    prompt=content, max_length=20,
 )
 tokenizer.decode(greedy_output[0], skip_special_tokens=True)
 ```
@@ -59,13 +61,13 @@ Example with typical decoding, which will require a `random_seed` before generat
 ```python
 decoder3 = TypicalDecoder(model, random_seed=603, typical_p=0.4)
 typical_output = decoder3.generate_text(
-    prompt=content, max_length=20, early_stopping=True
+    prompt=content, max_length=20,
 )
 
 # new random seed
 decoder3.set_random_seed(101)
 typical_output_2 = decoder3.generate_text(
-    prompt=content, max_length=20, early_stopping=True
+    prompt=content, max_length=20,
 )
 ```
 
