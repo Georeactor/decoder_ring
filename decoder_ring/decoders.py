@@ -2,7 +2,9 @@ import logging
 from random import randint
 from typing import Optional, Type, Union
 
+from timecontrol.decode import GPT2TimeLMHeadModel
 from torch import Tensor, LongTensor
+from torch.nn import Module
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationMixin, set_seed
 
 GenerationOutput = LongTensor
@@ -245,6 +247,29 @@ class ContrastiveSearch(RandomSampling):
             max_length=max_length,
             penalty_alpha=self.penalty_alpha,
             top_k=self.top_k,
+        )
+
+
+class TimeControl(RandomSampling):
+    def __init__(
+        self,
+        model: GPT2TimeLMHeadModel,
+        trained_encoder: Module,
+        random_seed: Optional[int] = None,
+    ) -> None:
+        super().__init__(model, random_seed=random_seed)
+        self.encoder = trained_encoder
+
+    def generate_text(
+        self,
+        prompt: Optional[Tensor],
+        max_length: int = 100,
+    ) -> GenerationOutput:
+        self.validate_params()
+        return self.model.generate(
+            prompt,
+            do_sample=True,
+            max_length=max_length,
         )
 
 
