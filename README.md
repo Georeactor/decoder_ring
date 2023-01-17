@@ -23,7 +23,10 @@ I would like to expand on the documentation in all of the decoder options, links
 - ContrastiveSearch (params: random_seed, penalty_alpha, top_k)
 - GreedyDecoder
 - RandomSampling (params: random_seed)
+- TimeControl (params: trained_encoder, random_seed)
 - TypicalDecoder (params: random_seed, typical_p)
+
+Modules: TimeControl requires: Datasets, PyTorch Lightning, TQDM 
 
 ### Writer Examples (text input and output)
 
