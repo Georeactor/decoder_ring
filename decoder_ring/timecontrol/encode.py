@@ -623,3 +623,10 @@ class BrownianBridgeSystem(pl.LightningModule):
         loss = self.get_losses_for_batch(batch=batch, batch_idx=i)
         self.log("test_loss", loss.cpu().detach().numpy(), prog_bar=True, on_step=True)
         return loss
+
+    def save(self, directory):
+        torch.save(self.model.mlp.state_dict(), os.path.join(directory, "mlp.pt"))
+        torch.save(
+            self.model.feature_extractor.state_dict(),
+            os.path.join(directory, "feature_extractor.pt"),
+        )
